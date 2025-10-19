@@ -1,5 +1,6 @@
 package com.example.IMS_Backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "stores")
 public class Store {
 
@@ -27,5 +29,6 @@ public class Store {
 
     // One store can have multiple inventory records
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("store")
     private List<Inventory> inventories = new ArrayList<>();
 }
