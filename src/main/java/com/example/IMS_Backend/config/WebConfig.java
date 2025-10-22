@@ -12,8 +12,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
                 .allowedOrigins("http://localhost:4200")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*");
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Added OPTIONS
+                .allowedHeaders("*")
+                .allowCredentials(true) // Important for JWT cookies if used
+                .exposedHeaders("Authorization"); // Expose Authorization header if needed
     }
 
     @Override

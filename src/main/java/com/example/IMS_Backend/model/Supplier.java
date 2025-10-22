@@ -2,23 +2,12 @@ package com.example.IMS_Backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "suppliers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@EqualsAndHashCode(exclude = "products")
-@ToString(exclude = "products")
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,15 +16,40 @@ public class Supplier {
     @Column(nullable = false, unique = true)
     private String name;
 
-    private String contactNumber;
-
-    private String email;
-
+    private String contactEmail;
+    private String phone;
     private String address;
 
-    @OneToMany(mappedBy = "supplier",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-            orphanRemoval = true)
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("supplier")
     private List<Product> products = new ArrayList<>();
+
+    // Constructors
+    public Supplier() {}
+
+    public Supplier(String name, String contactEmail, String phone, String address) {
+        this.name = name;
+        this.contactEmail = contactEmail;
+        this.phone = phone;
+        this.address = address;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getContactEmail() { return contactEmail; }
+    public void setContactEmail(String contactEmail) { this.contactEmail = contactEmail; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+
+    public List<Product> getProducts() { return products; }
+    public void setProducts(List<Product> products) { this.products = products; }
 }
