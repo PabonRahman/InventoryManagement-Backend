@@ -64,7 +64,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
-                        .requestMatchers("/api/auth/**", "/api/public/**", "/error").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/public/**", "/error","/uploads/**").permitAll()
+
+
+                        .requestMatchers("/uploads/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
+
 
                         // Categories
                         .requestMatchers(HttpMethod.GET, "/api/categories/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
