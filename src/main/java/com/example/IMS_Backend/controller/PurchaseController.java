@@ -1,8 +1,10 @@
 package com.example.IMS_Backend.controller;
 
-import com.example.IMS_Backend.model.Purchase;
+import com.example.IMS_Backend.dto.PurchaseDTO;
+import com.example.IMS_Backend.dto.PurchaseRequest;
 import com.example.IMS_Backend.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,28 +18,23 @@ public class PurchaseController {
     private PurchaseService purchaseService;
 
     @GetMapping
-    public List<Purchase> getAllPurchases() {
-        return purchaseService.getAllPurchases();
+    public ResponseEntity<List<PurchaseDTO>> getAllPurchases() {
+        return ResponseEntity.ok(purchaseService.getAllPurchases());
     }
 
     @GetMapping("/{id}")
-    public Purchase getPurchase(@PathVariable Long id) {
-        return purchaseService.getPurchase(id);
+    public ResponseEntity<PurchaseDTO> getPurchase(@PathVariable Long id) {
+        return ResponseEntity.ok(purchaseService.getPurchase(id));
     }
 
     @PostMapping
-    public Purchase createPurchase(@RequestBody Purchase purchase) {
-        return purchaseService.savePurchase(purchase);
-    }
-
-    @PutMapping("/{id}")
-    public Purchase updatePurchase(@PathVariable Long id, @RequestBody Purchase purchase) {
-        purchase.setId(id);
-        return purchaseService.savePurchase(purchase);
+    public ResponseEntity<PurchaseDTO> createPurchase(@RequestBody PurchaseRequest request) {
+        return ResponseEntity.ok(purchaseService.savePurchase(request));
     }
 
     @DeleteMapping("/{id}")
-    public void deletePurchase(@PathVariable Long id) {
+    public ResponseEntity<?> deletePurchase(@PathVariable Long id) {
         purchaseService.deletePurchase(id);
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.IMS_Backend.controller;
 
+import com.example.IMS_Backend.dto.StoreDTO;
 import com.example.IMS_Backend.model.Store;
 import com.example.IMS_Backend.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,33 +16,44 @@ public class StoreController {
     @Autowired
     private StoreService storeService;
 
-    // Get all stores
+    // FIXED: Now using methods that provide ACTUAL COUNTS
     @GetMapping
-    public List<Store> getAllStores() {
-        return storeService.getAllStores();
+    public List<StoreDTO> getAllStores() {
+        return storeService.getAllStoresWithCounts(); // This will show real counts
     }
 
-    // Get a store by ID
+    // FIXED: Now using methods that provide ACTUAL COUNTS
     @GetMapping("/{id}")
-    public Store getStoreById(@PathVariable Long id) {
-        return storeService.getStoreById(id);
+    public StoreDTO getStoreById(@PathVariable Long id) {
+        return storeService.getStoreWithCounts(id); // This will show real counts
     }
 
-    // Create a new store
     @PostMapping
-    public Store createStore(@RequestBody Store store) {
-        return storeService.createStore(store);
+    public StoreDTO createStore(@RequestBody Store store) {
+        // For create/update, we can use the old DTO methods since counts will be 0 for new stores
+        Store createdStore = storeService.createStore(store);
+        return storeService.convertToDTO(createdStore);
     }
 
-    // Update an existing store
     @PutMapping("/{id}")
-    public Store updateStore(@PathVariable Long id, @RequestBody Store store) {
-        return storeService.updateStore(id, store);
+    public StoreDTO updateStore(@PathVariable Long id, @RequestBody Store store) {
+        Store updatedStore = storeService.updateStore(id, store);
+        return storeService.convertToDTO(updatedStore);
     }
 
-    // Delete a store
     @DeleteMapping("/{id}")
     public void deleteStore(@PathVariable Long id) {
         storeService.deleteStore(id);
+    }
+
+    @DeleteMapping("/hard/{id}")
+    public void hardDeleteStore(@PathVariable Long id) {
+        storeService.hardDeleteStore(id);
+    }
+
+    // Optional: Add search endpoint
+    @GetMapping("/search")
+    public List<StoreDTO> searchStores(@RequestParam String query) {
+        return storeService.searchStoresWithCounts(query);
     }
 }

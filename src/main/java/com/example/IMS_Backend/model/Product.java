@@ -26,13 +26,18 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    @JsonIgnoreProperties("products") // Prevent infinite recursion
+    @JsonIgnoreProperties("products")
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
-    @JsonIgnoreProperties("products") // Prevent infinite recursion
+    @JsonIgnoreProperties("products")
     private Supplier supplier;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    @JsonIgnoreProperties("products")
+    private Store store;
 
     // Constructors
     public Product() {}
@@ -45,7 +50,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    // Manual Getters and Setters
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -69,4 +74,7 @@ public class Product {
 
     public Supplier getSupplier() { return supplier; }
     public void setSupplier(Supplier supplier) { this.supplier = supplier; }
+
+    public Store getStore() { return store; }
+    public void setStore(Store store) { this.store = store; }
 }

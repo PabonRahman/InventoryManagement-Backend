@@ -1,8 +1,10 @@
 package com.example.IMS_Backend.controller;
 
-import com.example.IMS_Backend.model.Product;
+import com.example.IMS_Backend.dto.ProductDTO;
 import com.example.IMS_Backend.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,50 +20,89 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
-    }
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        return productService.getProductById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<Product> createProduct(
-            @RequestPart("product") Product product,
-            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
+    // Get all products
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
         try {
-            Product createdProduct = productService.createProduct(product, imageFile);
-            return ResponseEntity.ok(createdProduct);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
+            List<ProductDTO> products = productService.getAllProductsDTO();
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(
-            @PathVariable Long id,
-            @RequestPart("product") Product productDetails,
-            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
+    // Get product by ID
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         try {
-            Product updatedProduct = productService.updateProduct(id, productDetails, imageFile);
-            return ResponseEntity.ok(updatedProduct);
+            ProductDTO product = productService.getProductDTOById(id);
+            return ResponseEntity.ok(product);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
 
+    // Create new product (multipart with optional image) - UPDATED FOR DTO
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductDTO> createProduct(
+            @RequestPart("product") String productJson,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile
+    ) throws IOException {
+        try {
+            // Convert JSON to ProductDTO instead of Product
+            ProductDTO productDTO = objectMapper.readValue(productJson, ProductDTO.class);
+            ProductDTO saved = productService.createProduct(productDTO, imageFile);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // Update product (multipart with optional image) - UPDATED FOR DTO
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductDTO> updateProduct(
+            @PathVariable Long id,
+            @RequestPart("product") String productJson,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile
+    ) throws IOException {
+        try {
+            // Convert JSON to ProductDTO instead of Product
+            ProductDTO productDTO = objectMapper.readValue(productJson, ProductDTO.class);
+            ProductDTO updated = productService.updateProduct(id, productDTO, imageFile);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // Simple update without image - UPDATED FOR DTO
+    @PutMapping(value = "/{id}/simple", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductDTO> updateProductSimple(
+            @PathVariable Long id,
+            @RequestBody ProductDTO productDTO
+    ) {
+        try {
+            ProductDTO updated = productService.updateProduct(id, productDTO);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // Delete product
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         try {
             productService.deleteProduct(id);
-            return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

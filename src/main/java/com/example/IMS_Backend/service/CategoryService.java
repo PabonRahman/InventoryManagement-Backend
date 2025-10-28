@@ -1,16 +1,15 @@
 package com.example.IMS_Backend.service;
 
 import com.example.IMS_Backend.model.Category;
+import com.example.IMS_Backend.dto.CategoryDTO;
 import com.example.IMS_Backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
-
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -36,5 +35,15 @@ public class CategoryService {
 
     public Optional<Category> findByName(String name) {
         return categoryRepository.findByName(name);
+    }
+
+    // NEW METHOD: Get categories with product counts
+    public List<CategoryDTO> findAllWithProductCount() {
+        return categoryRepository.findAllWithProductCount();
+    }
+
+    // Optional: Get single category with count
+    public Optional<CategoryDTO> findByIdWithProductCount(Long id) {
+        return categoryRepository.findByIdWithProductCount(id);
     }
 }

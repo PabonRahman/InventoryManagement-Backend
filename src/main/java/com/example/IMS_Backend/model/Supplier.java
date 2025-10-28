@@ -9,22 +9,27 @@ import java.util.List;
 @Table(name = "suppliers")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Supplier {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    // Removed `unique = true` so multiple rows can share the same name if soft-deleted
+    @Column(nullable = false)
     private String name;
 
     private String contactEmail;
     private String phone;
     private String address;
 
+    // For soft delete
+    @Column(nullable = false)
+    private Boolean isActive = true;
+
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("supplier")
     private List<Product> products = new ArrayList<>();
 
-    // Constructors
     public Supplier() {}
 
     public Supplier(String name, String contactEmail, String phone, String address) {
@@ -32,9 +37,10 @@ public class Supplier {
         this.contactEmail = contactEmail;
         this.phone = phone;
         this.address = address;
+        this.isActive = true;
     }
 
-    // Getters and Setters
+    // Getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -49,6 +55,9 @@ public class Supplier {
 
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
+
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
 
     public List<Product> getProducts() { return products; }
     public void setProducts(List<Product> products) { this.products = products; }
