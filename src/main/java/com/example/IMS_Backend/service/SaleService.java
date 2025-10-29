@@ -32,9 +32,14 @@ public class SaleService {
 
     // Convert Sale entity → DTO
     private SaleResponseDTO convertToDTO(Sale sale) {
+        String categoryName = (sale.getProduct().getCategory() != null)
+                ? sale.getProduct().getCategory().getName()
+                : "N/A";
+
         return new SaleResponseDTO(
                 sale.getId(),
                 sale.getProduct().getName(),
+                categoryName, // ✅ Added category
                 sale.getStore().getName(),
                 sale.getQuantity(),
                 sale.getPrice(),
@@ -42,6 +47,7 @@ public class SaleService {
                 sale.getDescription()
         );
     }
+
 
     // Get all sales (DTO-based)
     public List<SaleResponseDTO> getAllSales() {
