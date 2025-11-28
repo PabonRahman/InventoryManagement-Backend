@@ -68,8 +68,8 @@ public class ProductService {
         // Update basic fields
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        product.setQuantity(productDTO.getQuantity());
+
+
 
         // Update relationships
         if (productDTO.getCategoryId() != null) {
@@ -118,8 +118,8 @@ public class ProductService {
         Product product = new Product();
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
-        product.setPrice(dto.getPrice());
-        product.setQuantity(dto.getQuantity());
+
+
         product.setImageUrl(dto.getImageUrl());
 
         // Set relationships if IDs are provided

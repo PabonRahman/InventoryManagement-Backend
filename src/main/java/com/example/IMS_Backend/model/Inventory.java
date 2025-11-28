@@ -22,12 +22,13 @@ public class Inventory {
     // Many inventory records belong to one store
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
-    @JsonIgnoreProperties("inventories")
+    @JsonIgnoreProperties({"inventories", "products", "purchases", "sales"})
     private Store store;
 
     // Many inventory records belong to one product
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonIgnoreProperties({"inventories", "store", "category", "supplier"})
     private Product product;
 
     @Column(nullable = false)

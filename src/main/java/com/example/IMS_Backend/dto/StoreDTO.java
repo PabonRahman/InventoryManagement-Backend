@@ -38,18 +38,6 @@ public class StoreDTO {
         this.saleCount = saleCount;
     }
 
-    // Basic constructor without counts
-    public StoreDTO(Long id, String name, String address, String contactNumber, Boolean isActive) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.contactNumber = contactNumber;
-        this.isActive = isActive;
-        this.productCount = 0L;
-        this.purchaseCount = 0L;
-        this.saleCount = 0L;
-    }
-
     // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -74,15 +62,4 @@ public class StoreDTO {
 
     public Long getSaleCount() { return saleCount; }
     public void setSaleCount(Long saleCount) { this.saleCount = saleCount; }
-
-    @Override
-    public String toString() {
-        return "StoreDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", productCount=" + productCount +
-                ", purchaseCount=" + purchaseCount +
-                ", saleCount=" + saleCount +
-                '}';
-    }
 }

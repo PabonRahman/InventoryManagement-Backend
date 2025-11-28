@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+    http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="ProductSalesReport" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="50" bottomMargin="50" uuid="abcdef12-3456-7890-abcd-ef1234567890">
+
+    <!-- Styles -->
+    <style name="TitleStyle" fontName="Arial" fontSize="18" isBold="true"/>
+    <style name="ColumnHeaderStyle" fontName="Arial" fontSize="12" isBold="true" backcolor="#DDDDDD" mode="Opaque"/>
+    <style name="DetailStyle" fontName="Arial" fontSize="12"/>
+
+    <!-- Fields -->
+    <field name="id" class="java.lang.Long"/>
+    <field name="productName" class="java.lang.String"/>
+    <field name="categoryName" class="java.lang.String"/>
+    <field name="storeName" class="java.lang.String"/>
+    <field name="quantity" class="java.lang.Integer"/>
+    <field name="price" class="java.lang.Double"/>
+    <field name="saleDate" class="java.lang.String"/>
+    <field name="description" class="java.lang.String"/>
+
+    <!-- Title -->
+    <title>
+        <band height="50">
+            <staticText>
+                <reportElement x="0" y="0" width="515" height="30" style="TitleStyle"/>
+                <text><![CDATA[Product Sales Report]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <!-- Column Header -->
+    <columnHeader>
+        <band height="30">
+            <textField>
+                <reportElement x="0" y="0" width="30" height="30" style="ColumnHeaderStyle"/>
+                <textFieldExpression><![CDATA["ID"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="30" y="0" width="100" height="30" style="ColumnHeaderStyle"/>
+                <textFieldExpression><![CDATA["Product"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="130" y="0" width="80" height="30" style="ColumnHeaderStyle"/>
+                <textFieldExpression><![CDATA["Category"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="210" y="0" width="80" height="30" style="ColumnHeaderStyle"/>
+                <textFieldExpression><![CDATA["Store"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="290" y="0" width="50" height="30" style="ColumnHeaderStyle"/>
+                <textFieldExpression><![CDATA["Qty"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="340" y="0" width="60" height="30" style="ColumnHeaderStyle"/>
+                <textFieldExpression><![CDATA["Price"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="400" y="0" width="80" height="30" style="ColumnHeaderStyle"/>
+                <textFieldExpression><![CDATA["Date"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="480" y="0" width="100" height="30" style="ColumnHeaderStyle"/>
+                <textFieldExpression><![CDATA["Description"]]></textFieldExpression>
+            </textField>
+        </band>
+    </columnHeader>
+
+    <!-- Detail -->
+    <detail>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="0" width="30" height="20" style="DetailStyle"/>
+                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="30" y="0" width="100" height="20" style="DetailStyle"/>
+                <textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="130" y="0" width="80" height="20" style="DetailStyle"/>
+                <textFieldExpression><![CDATA[$F{categoryName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="210" y="0" width="80" height="20" style="DetailStyle"/>
+                <textFieldExpression><![CDATA[$F{storeName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="290" y="0" width="50" height="20" style="DetailStyle"/>
+                <textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="340" y="0" width="60" height="20" style="DetailStyle"/>
+                <textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="400" y="0" width="80" height="20" style="DetailStyle"/>
+                <textFieldExpression><![CDATA[$F{saleDate}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="480" y="0" width="100" height="20" style="DetailStyle"/>
+                <textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- Page Footer -->
+    <pageFooter>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="515" height="20"/>
+                <text><![CDATA[Page ]]></text>
+            </staticText>
+<!--            <pageNumber>-->
+<!--                <reportElement x="50" y="0" width="50" height="20"/>-->
+<!--            </pageNumber>-->
+        </band>
+    </pageFooter>
+
+</jasperReport>

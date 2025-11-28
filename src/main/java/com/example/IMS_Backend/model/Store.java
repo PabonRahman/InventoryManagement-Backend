@@ -24,7 +24,7 @@ public class Store {
     private Boolean isActive = true;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("store")
+    @JsonIgnoreProperties({"store", "product", "category", "supplier"})
     private List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -34,6 +34,10 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("store")
     private List<Sale> sales = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"store", "product"})
+    private List<Inventory> inventories = new ArrayList<>();
 
     // Constructors
     public Store() {}
@@ -69,4 +73,7 @@ public class Store {
 
     public List<Sale> getSales() { return sales; }
     public void setSales(List<Sale> sales) { this.sales = sales; }
+
+    public List<Inventory> getInventories() { return inventories; }
+    public void setInventories(List<Inventory> inventories) { this.inventories = inventories; }
 }
